@@ -13,12 +13,12 @@ services:
       - db
 
   db:
-    container_name: mariadb
+    container_name: school_db
     image: mariadb:latest
     restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=database
+      - MYSQL_DATABASE=school_db
       - MYSQL_USER=user
       - MYSQL_PASSWORD=password
     ports:

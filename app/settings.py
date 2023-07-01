@@ -76,7 +76,7 @@ WSGI_APPLICATION = 'app.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'database',
+        'NAME': 'school_db',
         'USER': 'user',
         'PASSWORD': 'password',
         'HOST': 'db',  # Docker内のdbサービスを指定します
