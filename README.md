@@ -1,3 +1,7 @@
+# Chirp
+
+このアプリはブログのようなものです。
+
 # django-template
 
 start project だけ実行してくれれば、あとはいつも通りの django で開発できます。
