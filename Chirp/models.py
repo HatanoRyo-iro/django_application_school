@@ -27,7 +27,7 @@ class Group(models.Model):
     group_name = models.CharField(max_length=50)
     
     def __str__(self):
-        return self.group_name + '(' + str(self.contributor_account) +')'
+        return self.group_name + '(' + str(self.group_owner_id) +')'
     
     
 class Friend(models.Model):
