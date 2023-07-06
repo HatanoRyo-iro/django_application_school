@@ -1,0 +1,16 @@
+{% extends 'Chirp/base.html' %}
+
+{% block title %}ホーム{% endblock %} 
+
+{% block　content %}
+<h1>ホーム画面</h1>
+
+<p>{{ request.user }}</p>
+
+{% if request.user.is_authenticated %}
+    <a href="{% url 'logout' %}">Logout</a>
+{% else %}
+    <a href="{% url 'login' %}">Login</a>
+{% endif %}
+
+{% endblock %}

@@ -10,6 +10,6 @@ class PostForm(forms.ModelForm):
     
     def __init__(self, user, *args, **kwargs):
         super(PostForm, self).__init__(*args, **kwargs)
-        public = User.objects.get(username='public').first()
+        public = User.objects.get(username='sample').first()
         self.field['groups'] = forms.ChoiceField(choices=[('-', '-')] + [(item.title, item.title) for item in Group.objects.filter(owner__in=[user, public])],
                                                  widget=forms.Select(attrs={'class' : 'form-control'}))
