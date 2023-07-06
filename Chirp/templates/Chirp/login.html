@@ -3,5 +3,16 @@
 {% block title %}ログイン{% endblock %} 
 
 {% block　content %}
-<h1>ログイン画面</h1>
+<div>
+    <h1>ログイン画面</h1>
+</div>
+
+<div>
+    <form method="POST" action="">
+        {% csrf_token %}
+        {{form.as_p}}
+        <input class="button" type="submit" value="ログイン" />
+    </form>
+    <p>まだアカウントを持っていませんか？ <a href="{% url 'signup' %}">新規登録</a></p>
+</div>
 {% endblock %}
