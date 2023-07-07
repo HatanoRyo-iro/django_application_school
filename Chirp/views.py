@@ -6,10 +6,10 @@ from django.forms import forms
 from django.views.generic import FormView
 
 from django.contrib.auth.views import LoginView
-# from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
+from django.contrib import messages
 
 # Create your views here.
 
@@ -40,6 +40,6 @@ class SignupView(FormView):
 
 
 
-@login_required(login_url='login')
+@login_required
 def home(request):
     return render(request, 'Chirp/home.html')
