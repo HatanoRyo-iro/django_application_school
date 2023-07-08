@@ -8,8 +8,8 @@ from .models import Post, Group, Friend, Good
 class GroupCheckboxForm(forms.Form):
     def __init__(self, user, *args, **kwargs):
         super(GroupCheckboxForm, self).__init__(*args, **kwargs)
-        public = User.objects.get(username='sample').first()
-        self.fields['groups'] = forms.MultipleChoiceField(choices=[(item.group_name, item.group_name) for item in Group.objects.filter(owner__in=[user, public])],
+        public = User.objects.filter(username='sample').first()
+        self.fields['groups'] = forms.MultipleChoiceField(choices=[(item.group_name, item.group_name) for item in Group.objects.filter(group_owner_id__in=[user, public])],
                                                           widget = forms.CheckboxSelectMultiple(attrs={'class' : 'form-check-input'}))
 
 
@@ -17,7 +17,7 @@ class GroupCheckboxForm(forms.Form):
 class GroupSelectMenuForm(forms.Form):
     def __init__(self, user, *args, **kwargs):
         super(GroupSelectMenuForm, self).__init__(*args, **kwargs)
-        self.fields['groups'] = forms.ChoiceField(choices=[('-', '-')] + [(item.group_name, item.group_name) for item in Group.objects.filter(owner=user)],
+        self.fields['groups'] = forms.ChoiceField(choices=[('-', '-')] + [(item.group_name, item.group_name) for item in Group.objects.filter(group_owner_id=user)],
                                                   widget=forms.Select(attrs={'class' : 'form-control'}))
 
 
@@ -31,7 +31,7 @@ class FriendsCheckboxForm(forms.Form):
     
 # グループ作成フォーム
 class CreateGroupForm(forms.ModelForm):
-    group_name = forms.ChoiceField(label='グループ名', max_length=50, 
+    group_name = forms.CharField(label='グループ名', max_length=50, 
                                    widget=forms.TextInput(attrs={'class' : 'form-control'}))
 
 # 投稿フォーム
@@ -41,5 +41,5 @@ class PostForm(forms.ModelForm):
     def __init__(self, user, *args, **kwargs):
         super(PostForm, self).__init__(*args, **kwargs)
         public = User.objects.get(username='sample').first()
-        self.field['groups'] = forms.ChoiceField(choices=[('-', '-')] + [(item.title, item.title) for item in Group.objects.filter(owner__in=[user, public])],
+        self.field['groups'] = forms.ChoiceField(choices=[('-', '-')] + [(item.title, item.title) for item in Group.objects.filter(group_owner_id__in=[user, public])],
                                                  widget=forms.Select(attrs={'class' : 'form-control'}))
