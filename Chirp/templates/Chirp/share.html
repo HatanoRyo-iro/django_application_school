@@ -1,0 +1,24 @@
+{% extends 'Chirp/base.html' %}
+
+{% block title %}シェア{% endblock %}
+
+{% block header %}
+<h1 class="display-4 text-primary">Share</h1>
+<p class="caption">※投稿先のグループを選択し、以下のメッセージをシェアします</p>
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{message}}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<p class="bg-light p-3">"{{share.content}} ({{share.contributor_id}})"</p>
+<form action="{% url 'share' share.id %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn btn-primary">シェア</button>
+</form>
+{% endblock %}

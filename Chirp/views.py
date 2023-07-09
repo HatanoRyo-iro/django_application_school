@@ -159,7 +159,7 @@ def groups(request):
             # フレンドのユーザー取得
             select_users = User.objects.filter(username__in=select_friends)
             # Userに含まれるユーザーが登録したフレンドを取得
-            friends = Friend.objects.filter(friend_owner_id__in=select_users).filter(group_id=group_obj)
+            friends = Friend.objects.filter(friend_owner_id=request.user).filter(user_id__in=select_users)
             
             # フレンド全員にグループを設定して保存
             friends_list = []
@@ -286,7 +286,7 @@ def share(request, share_id):
         post.contributor_id = request.user
         post.group_id = group
         post.content = content
-        post.share_id = share
+        post.share_id = share.id
         post.save()
         share_message = post.get_share()
         share_message.shared_count += 1
