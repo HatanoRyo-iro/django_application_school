@@ -1,16 +1,107 @@
 {% extends 'Chirp/base.html' %}
 
-{% block title %}ホーム{% endblock %} 
+{% block title %}ホーム{% endblock %}
 
-{% block　content %}
-<h1>ホーム画面</h1>
+{% block header %}
 
-<p>{{ request.user }}</p>
 
-{% if request.user.is_authenticated %}
-    <a href="{% url 'logout' %}">Logout</a>
-{% else %}
-    <a href="{% url 'login' %}">Login</a>
+<script>
+    function sendGroupForm(page) {
+        document.group_form.action += page;
+        document.group_form.submit();
+    }
+</script>
+<h1 class="display-4 text-primary">Chirp</h1>
+<p>※グループのチェックをONにしてupdateすると、
+    そのグループに登録されている利用者の投稿だけが表示されます。
+</p>
+{% if posts %}
+<ul class="posts">
+    {% for post in posts %}
+    <li{% if post.tags %} class="{{ post.tags }}" {% endif %}>{{ post }}</li>
+    {% endfor %}
+</ul>
 {% endif %}
+{% endblock %}
+
+{% block content %}
+
+<hr>
+<div>
+    <form action="{% url 'home' %}" method="post" name="group_form">
+        {% csrf_token %}
+        {{ check_form }}
+        <div>
+            <button class="btn btn-primary">update</button>
+        </div>
+    </form>
+</div>
+<table class="table mt-3">
+    <tr><th>Posts</th></tr>
+    {% for post in contents %}
+    <tr><td>
+        <p class="my-0">
+            {% if post.group_id.group_name == 'public' %}
+            <span class="bg-info text-light px-1">Public</span>
+            {% endif %}
+            {{post.content}}
+        </p>
+        <p class="">({{post.created_at}})</p>
+        {% if post.share_id > 0 %}
+        <ul><li class="text-black-50">"{{post.get_share}}"</li></ul>
+        {% endif %}
+        <span class="float-left text-info">share={{post.shared_count}} good={{post.good_count}}</span>
+        <span class="float-right">
+            "{{post.contributor_id}}"(<a href="{% url 'add' %}?name={{post.contributor_id}}">add friend</a>)
+            <a href="{% url 'share' post.id %}"><button class="py-0">シェア</button></a>
+            <a href="{% url 'good' post.id %}"><button class="py-0">いいね!</button></a>
+        </span>
+    </td></tr>
+    {% endfor %}
+</table>
+
+<ul class="pagination justify-content-center">
+    {% if contents.has_previous %}
+    <li class="page-item">
+        <a class="page-link" href="javascript:sendGroupForm(1);">
+            &laquo; first</a>
+    </li>
+    <li class="page-item">
+        <a class="page-link"
+        href="javascript:sendGroupForm({{contents.previous_page_number}});">
+            &laquo; prev</a>
+    </li>
+    {% else %}
+    <li class="page-item">
+        <a class="page-link">&laquo; first</a>
+    </li>
+    <li class="page-item">
+        <a class="page-link">&laquo; prev</a>
+    </li>
+    {% endif %}
+    <li class="page-item">
+        <a class="page-link">
+        {{contents.number}}/{{contents.paginator.num_pages}}</a>
+    </li>
+    {% if contents.has_next %}
+    <li class="page-item">
+        <a class="page-link" href="javascript:sendGroupForm({{contents.next_page_number }});">
+            next &raquo;</a>
+    </li>
+    <li class="page-item">
+        <a class="page-link" href="javascript:sendGroupForm({{contents.paginator.num_pages}});">
+            last &raquo;</a>
+    </li>
+    {% else %}
+    <li class="page-item">
+        <a class="page-link">next &raquo;</a>
+    </li>
+    <li class="page-item">
+        <a class="page-link">last &raquo;</a>
+    </li>
+    {% endif %}
+</ul>
 
 {% endblock %}
+
+

@@ -3,9 +3,33 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" crossroigin="anonymous">
     <title>{% block title %}{% endblock %}</title>
   </head>
-  <body>
-    {% block content %}{% endblock %}
+  <body class="container">
+    <nav class="navbar navbar-expand navbar-light bg-light">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a href="{% url 'home' %}" class="nav-link">ホーム</a>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'post' %}" class="nav-link">新規投稿</a>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'groups' %}" class="nav-link">グループ</a>
+        </li>
+      </ul>
+      <span>ログイン中: <span class="h6">"{{login_user}}"</span></span>
+    </nav>
+
+    <div>{% block header %}{% endblock %}</div>
+    <div class="content">{% block content %}{% endblock %}</div>
+
+    <hr>
+    <div class="my-3">
+      <span class="font-weight-bold">
+        <a href="{% url 'logout' %}">ログアウト</a>
+      </span>
+    </div>
   </body>
 </html>
