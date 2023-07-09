@@ -25,13 +25,13 @@ class GroupSelectMenuForm(forms.Form):
 class FriendsCheckboxForm(forms.Form):
     def __init__(self, user, friends=[], vals=[], *args, **kwargs):
         super(FriendsCheckboxForm, self).__init__(*args, **kwargs)
-        self.friends['friends'] = forms.MultipleChoiceField(choices=[(item.user_id, item.user_id) for item in friends],
+        self.fields['friends'] = forms.MultipleChoiceField(choices=[(item.user_id, item.user_id) for item in friends],
                                                             widget=forms.CheckboxSelectMultiple(attrs={'class' : 'form-check-input'}), initial=vals)
 
 
 # グループ作成フォーム
 class CreateGroupForm(forms.Form):
-    group_name = forms.CharField(label='グループ名', max_length=50, 
+    group_name = forms.CharField(label='グループ名', max_length=50,
                                    widget=forms.TextInput(attrs={'class' : 'form-control'}))
 
 # 投稿フォーム
