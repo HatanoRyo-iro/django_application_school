@@ -26,7 +26,7 @@ class FriendsCheckboxForm(forms.Form):
     def __init__(self, user, friends=[], vals=[], *args, **kwargs):
         super(FriendsCheckboxForm, self).__init__(*args, **kwargs)
         self.fields['friends'] = forms.MultipleChoiceField(choices=[(item.user_id, item.user_id) for item in friends],
-                                                            widget=forms.CheckboxSelectMultiple(attrs={'class' : 'form-check-input'}), initial=vals)
+                                                            widget=forms.CheckboxSelectMultiple(), initial=vals)
 
 
 # グループ作成フォーム

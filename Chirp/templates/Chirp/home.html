@@ -52,7 +52,7 @@
         {% endif %}
         <span class="float-left text-info">share={{post.shared_count}} good={{post.good_count}}</span>
         <span class="float-right">
-            "{{post.contributor_id}}"(<a href="{% url 'add' %}?name={{post.contributor_id}}">add friend</a>)
+            "投稿者：{{post.contributor_id}}"{% if request.user.id != post.contributor_id.id %}(<a href="{% url 'add' %}?name={{post.contributor_id}}">add friend</a>){% endif %}
             <a href="{% url 'share' post.id %}"><button class="py-0">シェア</button></a>
             <a href="{% url 'good' post.id %}"><button class="py-0">いいね!</button></a>
         </span>

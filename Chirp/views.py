@@ -137,11 +137,13 @@ def groups(request):
             # グループを取得
             group = Group.objects.filter(group_owner_id=request.user).filter(group_name=select_group).first()
             # グループに含まれるフレンドを取得
-            friends = Friend.objects.filter(friend_owner_id=request.user).filter(group_id=group)
-            print(Friend.objects.filter(friend_owner_id=request.user))
+            fds = Friend.objects.filter(friend_owner_id=request.user).filter(group_id=group)
+            print('******************************')
+            print("グループに含まれるフレンド:", Friend.objects.filter(friend_owner_id=request.user))
+            print('******************************')
             # フレンドのユーザーIDをリストにまとめる
             friends_list = []
-            for friend in friends:
+            for friend in fds:
                 friends_list.append(friend.user_id.username)
                 
             # フォームの用意
@@ -153,17 +155,19 @@ def groups(request):
             # 選択したグループの取得
             select_group = request.POST['group']
             group_obj = Group.objects.filter(group_name=select_group).first()
-            print(group_obj)
+            print('-----------------------')
+            print("選択したグループ:", group_obj)
+            print('-----------------------')
             # チェックしたフレンドを取得
             select_friends = request.POST.getlist('friends')
             # フレンドのユーザー取得
             select_users = User.objects.filter(username__in=select_friends)
             # Userに含まれるユーザーが登録したフレンドを取得
-            friends = Friend.objects.filter(friend_owner_id=request.user).filter(user_id__in=select_users)
+            fds = Friend.objects.filter(friend_owner_id=request.user).filter(user_id__in=select_users)
             
             # フレンド全員にグループを設定して保存
             friends_list = []
-            for friend in friends:
+            for friend in fds:
                 friend.group_id = group_obj
                 friend.save()
                 friends_list.append(friend.user_id.username)
