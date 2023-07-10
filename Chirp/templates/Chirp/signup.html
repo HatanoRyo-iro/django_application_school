@@ -5,14 +5,14 @@
 {% block content %}
 
 
-<div>
+<div class="header_bar">
     <h1>新規登録画面</h1>
 </div>
 
-<div>
+<div class="card_body">
     <form action="" method="POST">
         {% csrf_token %}
-        <label for='id_username'>{{form.username.label}}</label>
+        <label>{{form.username.label}}</label>
         {{form.username}}
         {% if form.username.errors %}
             <ul class="errorlist">
@@ -21,7 +21,7 @@
                 {% endfor %}
             </ul>
         {% endif %}
-        <label for='id_password1'>{{form.password1.label}}</label>
+        <label>{{form.password1.label}}</label>
         {{form.password1}}
         {% if form.password1.errors %}
             <ul class="errorlist">
@@ -30,7 +30,7 @@
                 {% endfor %}
             </ul>
         {% endif %}
-        <label for='id_password2'>{{form.password2.label}}</label>
+        <label>{{form.password2.label}}</label>
         {{form.password2}}
         {% if form.password2.errors %}
             <ul class="errorlist">

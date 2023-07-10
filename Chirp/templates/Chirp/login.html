@@ -3,15 +3,15 @@
 {% block title %}ログイン{% endblock %}
 
 {% block　content %}
-<div>
+<div class="header_bar">
     <h1>ログイン画面</h1>
 </div>
 
-<div>
+<div class="card_body">
     <form method="POST" action="">
         {% csrf_token %}
         {{form.as_p}}
-        <input class="button" type="submit" value="ログイン" />
+        <input style="margin-top:10px ;" class="button" type="submit" value="ログイン" />
     </form>
     <p>まだアカウントを持っていませんか？ <a href="{% url 'signup' %}">新規登録はこちら</a></p>
 </div>
