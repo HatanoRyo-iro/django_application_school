@@ -124,7 +124,7 @@ def home(request, page=1):
 
 @login_required
 def groups(request):
-    # 自分のフレンとの取得
+    # 自分のフレンドの取得
     friends = Friend.objects.filter(friend_owner_id=request.user)
     
     # POST

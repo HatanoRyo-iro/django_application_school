@@ -9,11 +9,16 @@
     <h1>新規登録画面</h1>
 </div>
 
-<div class="card_body">
+<div class="card-body">
     <form action="" method="POST">
         {% csrf_token %}
         <label>{{form.username.label}}</label>
         {{form.username}}
+        <label>{{form.password1.label}}</label>
+        {{form.password1}}
+        <label>{{form.password2.label}}</label>
+        {{form.password2}}
+
         {% if form.username.errors %}
             <ul class="errorlist">
                 {% for error in form.username.errors %}
@@ -21,8 +26,6 @@
                 {% endfor %}
             </ul>
         {% endif %}
-        <label>{{form.password1.label}}</label>
-        {{form.password1}}
         {% if form.password1.errors %}
             <ul class="errorlist">
                 {% for error in form.password1.errors %}
@@ -30,8 +33,6 @@
                 {% endfor %}
             </ul>
         {% endif %}
-        <label>{{form.password2.label}}</label>
-        {{form.password2}}
         {% if form.password2.errors %}
             <ul class="errorlist">
                 {% for error in form.password2.errors %}
