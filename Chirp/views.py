@@ -4,11 +4,12 @@ from django.urls import reverse_lazy
 
 from django.views.generic import FormView
 
+from django.contrib import messages
+from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login
-from django.contrib import messages
+
 from django.contrib.auth.models import User
 
 from django.core.paginator import Paginator
@@ -18,6 +19,8 @@ from django.db.models import Q
 from django.forms import forms
 from .forms import GroupCheckboxForm, GroupSelectMenuForm, FriendsCheckboxForm, CreateGroupForm, PostForm
 from .models import Post, Group, Friend, Good
+
+from django.db.utils import IntegrityError
 
 # Create your views here.
 
@@ -130,54 +133,61 @@ def groups(request):
     # POST
     if request.method == 'POST':
         
-        # グループメニュー
-        if request.POST['mode'] == '__groups_form__':
-            # 選択したグループ名を取得
-            select_group = request.POST['groups']
-            # グループを取得
-            group = Group.objects.filter(group_owner_id=request.user).filter(group_name=select_group).first()
-            # グループに含まれるフレンドを取得
-            fds = Friend.objects.filter(friend_owner_id=request.user).filter(group_id=group)
-            print('******************************')
-            print("グループに含まれるフレンド:", Friend.objects.filter(friend_owner_id=request.user))
-            print('******************************')
-            # フレンドのユーザーIDをリストにまとめる
-            friends_list = []
-            for friend in fds:
-                friends_list.append(friend.user_id.username)
+        
+            # グループメニュー
+            if request.POST['mode'] == '__groups_form__':
+                # 選択したグループ名を取得
+                select_group = request.POST['groups']
+                # グループを取得
+                group = Group.objects.filter(group_owner_id=request.user).filter(group_name=select_group).first()
+                # グループに含まれるフレンドを取得
+                fds = Friend.objects.filter(friend_owner_id=request.user).filter(group_id=group)
+                print('******************************')
+                print("グループに含まれるフレンド:", Friend.objects.filter(friend_owner_id=request.user))
+                print('******************************')
+                # フレンドのユーザーIDをリストにまとめる
                 
-            # フォームの用意
-            groupsform = GroupSelectMenuForm(request.user, request.POST)
-            friendsform = FriendsCheckboxForm(request.user, friends=friends, vals=friends_list)
-            
-        # フレンドのチェック更新時
-        if request.POST['mode'] == '__friends_form__':
-            # 選択したグループの取得
-            select_group = request.POST['group']
-            group_obj = Group.objects.filter(group_name=select_group).first()
-            print('-----------------------')
-            print("選択したグループ:", group_obj)
-            print('-----------------------')
-            # チェックしたフレンドを取得
-            select_friends = request.POST.getlist('friends')
-            # フレンドのユーザー取得
-            select_users = User.objects.filter(username__in=select_friends)
-            # Userに含まれるユーザーが登録したフレンドを取得
-            fds = Friend.objects.filter(friend_owner_id=request.user).filter(user_id__in=select_users)
-            
-            # フレンド全員にグループを設定して保存
-            friends_list = []
-            for friend in fds:
-                friend.group_id = group_obj
-                friend.save()
-                friends_list.append(friend.user_id.username)
-            
-            messages.success(request, 'チェックされたFriendを' + select_group + 'に登録しました!')
-            
-            # フォームの用意
-            groupsform = GroupSelectMenuForm(request.user, {'groups':select_group})
-            friendsform = FriendsCheckboxForm(request.user, friends=friends, vals=friends_list)
-            
+                friends_list = []
+                for friend in fds:
+                    friends_list.append(friend.user_id.username)
+                    
+                # フォームの用意
+                groupsform = GroupSelectMenuForm(request.user, request.POST)
+                friendsform = FriendsCheckboxForm(request.user, friends=friends, vals=friends_list)
+                
+            # フレンドのチェック更新時
+            if request.POST['mode'] == '__friends_form__':
+                # 選択したグループの取得
+                select_group = request.POST['group']
+                group_obj = Group.objects.filter(group_name=select_group).first()
+                print('-----------------------')
+                print("選択したグループ:", group_obj)
+                print('-----------------------')
+                # チェックしたフレンドを取得
+                select_friends = request.POST.getlist('friends')
+                # フレンドのユーザー取得
+                select_users = User.objects.filter(username__in=select_friends)
+                # Userに含まれるユーザーが登録したフレンドを取得
+                fds = Friend.objects.filter(friend_owner_id=request.user).filter(user_id__in=select_users)
+                
+                try:
+                    # フレンド全員にグループを設定して保存
+                    friends_list = []
+                    for friend in fds:
+                        friend.group_id = group_obj
+                        friend.save()
+                        friends_list.append(friend.user_id.username)
+                except IntegrityError as e:
+                    error_message = str(e)
+                    messages.info(request, 'グループを選択してください。')
+                    return redirect(to='/')
+                            
+                messages.success(request, 'チェックされたFriendを' + select_group + 'に登録しました!')
+                
+                # フォームの用意
+                groupsform = GroupSelectMenuForm(request.user, {'groups':select_group})
+                friendsform = FriendsCheckboxForm(request.user, friends=friends, vals=friends_list)
+        
     # GET
     else:
         # フォームの用意
@@ -328,5 +338,5 @@ def good(request, good_id):
     good.good_post_id = good_post
     good.save()
     
-    messages.success(request, '投稿にGoodしました！')
+    messages.success(request, '投稿にGoodしました!')
     return redirect(to='/')

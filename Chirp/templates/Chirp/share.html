@@ -8,7 +8,9 @@
 {% if messages %}
 <ul class="messages">
     {% for message in messages %}
-    <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{message}}</li>
+    <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'info' %}alert-info{% endif %}">
+        {{ message }}
+    </div>
     {% endfor %}
 </ul>
 {% endif %}
