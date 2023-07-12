@@ -1,12 +1,13 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 
 from django.urls import reverse_lazy
 
-from django.views.generic import FormView
+from django.views.generic import FormView, DeleteView
 
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.forms import UserCreationForm
 
@@ -179,7 +180,7 @@ def groups(request):
                         friends_list.append(friend.user_id.username)
                 except IntegrityError as e:
                     error_message = str(e)
-                    messages.info(request, 'グループを選択してください。')
+                    messages.info(request, 'グループを選択してselect membersを押してからset memberを押してください')
                     return redirect(to='/')
                             
                 messages.success(request, 'チェックされたFriendを' + select_group + 'に登録しました!')
@@ -340,3 +341,29 @@ def good(request, good_id):
     
     messages.success(request, '投稿にGoodしました!')
     return redirect(to='/')
+
+# class MyPostDelete(LoginRequiredMixin, DeleteView):
+#     model = Post
+#     template_name = 'Chirp/mypost_delete.html'
+    
+#     def get_success_url(self):
+#         messages.success(self.request, '投稿を削除しました！')
+#         return reverse_lazy('home')
+
+@login_required
+def mypost_delete(request, post_id):
+    # 投稿の取得
+    post = get_object_or_404(Post, id=post_id, contributor_id=request.user)
+
+    if request.method == 'POST':
+        # 削除処理
+        post.delete()
+        
+        messages.success(request, '投稿を削除しました！')
+        return redirect('home')
+    else:
+        params = {
+            'login_user' : request.user,
+            'post' : post,
+        }
+        return render(request, 'Chirp/mypost_delete.html', params)

@@ -1,0 +1,17 @@
+{% extends 'Chirp/base.html' %}
+
+{% block title %}投稿削除{% endblock %}
+
+{% block header %}
+<h1 class="display-4 text-success">Share</h1>
+<p class="caption">※以下の投稿を削除します。</p>
+{% endblock %}
+
+{% block content %}
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <h4>"{{ post.content }}"</h4>
+    <button class="btn btn-outline-danger">削除</button>
+</form>
+{% endblock %}
