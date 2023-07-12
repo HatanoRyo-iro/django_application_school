@@ -3,18 +3,20 @@
 {% block title %}ホーム{% endblock %}
 
 {% block header %}
-
-
-<script>
-    function sendGroupForm(page) {
-        document.group_form.action += page;
-        document.group_form.submit();
-    }
-</script>
+ 
 <h1 class="display-4 text-success">Chirp</h1>
 <p>※グループのチェックをONにしてupdateすると、
     そのグループに登録されている利用者の投稿だけが表示されます。
 </p>
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'info' %}alert-info{% endif %}">
+        {{ message }}
+    </div>
+    {% endfor %}
+</ul>
+{% endif %}
 {% if posts %}
 <ul class="posts">
     {% for post in posts %}
@@ -55,6 +57,9 @@
             "投稿者：{{post.contributor_id}}"{% if request.user.id != post.contributor_id.id %}(<a href="{% url 'add' %}?name={{post.contributor_id}}">add friend</a>){% endif %}
             <a href="{% url 'share' post.id %}"><button class="py-0">シェア</button></a>
             <a href="{% url 'good' post.id %}"><button class="py-0">いいね!</button></a>
+            {% if request.user.id == post.contributor_id.id %}
+            <a href="{% url 'mypost_delete' post.id %}"><button class="py-0">削除</button></a>
+            {% endif %}
         </span>
     </td></tr>
     {% endfor %}
