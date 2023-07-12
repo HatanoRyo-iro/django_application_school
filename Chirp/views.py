@@ -179,6 +179,7 @@ def groups(request):
                         friends_list.append(friend.user_id.username)
                 except IntegrityError as e:
                     error_message = str(e)
+                    print(error_message)    
                     messages.info(request, 'グループを選択してください。')
                     return redirect(to='/')
                             
