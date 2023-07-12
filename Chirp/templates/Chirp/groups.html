@@ -3,6 +3,7 @@
 {% block title %}グループ{% endblock %}
 
 {% block header %}
+
 <h1 class="display-4 text-success">Group</h1>
 <p class="caption">※グループを選択してselect memberすると、
     そのグループに登録されている利用者がONになります。
@@ -11,8 +12,9 @@
 {% if messages %}
 <ul class="messages">
     {% for message in messages %}
-    <li{% if message.tags %} class="{{ message.tags }}"
-        {% endif %}>{{ message }}</li>
+    <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'info' %}alert-info{% endif %}">
+        {{ message }}
+    </div>
     {% endfor %}
 </ul>
 {% endif %}
@@ -31,13 +33,13 @@
 <input type="hidden" name="mode" value="__friends_form__">
 <input type="hidden" name="group" value="{{group}}">
 {{friends_form}}
-<button class="btn btn-outline-success mt-0">set members</button>
+<button class="btn btn-outline-success mt-0" id="select-members-btn">set members</button>
 </form>
 <hr>
 <p>※新しいGroupの登録</p>
 <form action="{% url 'create_group' %}" method="post">
 {% csrf_token %}
 {{create_form}}
-<button class="btn btn-outline-success mt-1">create new group</button>
+<button class="btn btn-outline-success mt-1" id="set-members-btn">create new group</button>
 </form>
 {% endblock %}
