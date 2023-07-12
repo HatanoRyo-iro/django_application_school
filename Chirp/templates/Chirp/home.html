@@ -11,7 +11,7 @@
         document.group_form.submit();
     }
 </script>
-<h1 class="display-4 text-primary">Chirp</h1>
+<h1 class="display-4 text-success">Chirp</h1>
 <p>※グループのチェックをONにしてupdateすると、
     そのグループに登録されている利用者の投稿だけが表示されます。
 </p>
@@ -32,7 +32,7 @@
         {% csrf_token %}
         {{ check_form }}
         <div>
-            <button class="btn btn-primary">update</button>
+            <button class="btn btn-outline-success">update</button>
         </div>
     </form>
 </div>
