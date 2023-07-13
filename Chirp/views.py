@@ -342,21 +342,13 @@ def good(request, good_id):
     messages.success(request, '投稿にGoodしました!')
     return redirect(to='/')
 
-# class MyPostDelete(LoginRequiredMixin, DeleteView):
-#     model = Post
-#     template_name = 'Chirp/mypost_delete.html'
-    
-#     def get_success_url(self):
-#         messages.success(self.request, '投稿を削除しました！')
-#         return reverse_lazy('home')
-
+# 自分の投稿の削除
 @login_required
 def mypost_delete(request, post_id):
     # 投稿の取得
     post = get_object_or_404(Post, id=post_id, contributor_id=request.user)
 
     if request.method == 'POST':
-        # 削除処理
         post.delete()
         
         messages.success(request, '投稿を削除しました！')
