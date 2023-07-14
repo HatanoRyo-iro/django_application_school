@@ -235,18 +235,30 @@ def add(request):
     friend.group_id = public_group
     friend.save()
     
-    messages.success(request, add_user.username + ' を追加しました！groupページに移動して、追加したFriendをメンバーに設定してください。')
+    messages.success(request, add_user.username + ' を追加しました!groupページに移動して、追加したFriendをメンバーに設定してください。')
     return redirect(to='/')
 
 # グループ作成処理
 @login_required
 def create_group(request):
-    group = Group()
-    group.group_owner_id = request.user
-    group.group_name = request.user.username + 'の' + request.POST['group_name']
-    group.save()
-    messages.success(request, '新しいグループを作成しました！')
-    return redirect(to='/groups')
+    if request.method == 'POST':
+        # 送信内容の取得
+        group_name = request.POST['group_name']
+        # グループの保存
+        group = Group()
+        group.group_owner_id = request.user
+        group.group_name = request.user.username + 'の' + request.POST['group_name']
+        group.save()
+        messages.success(request, '新しいグループを作成しました！')
+        return redirect(to='/')
+        
+    createform = CreateGroupForm()
+    params = {
+        'login_user' : request.user,
+        'create_form' : createform,
+    }
+    
+    return render(request, 'Chirp/create_group.html', params)
 
 
 # 投稿処理

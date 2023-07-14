@@ -46,6 +46,7 @@
             {% if post.group_id.group_name == 'public' %}
             <span class="bg-info text-light px-1">Public</span>
             {% endif %}
+            {{post.group_id.group_name}}
             {{post.content}}
         </p>
         <p class="">({{post.created_at}})</p>

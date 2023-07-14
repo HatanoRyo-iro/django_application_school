@@ -1,6 +1,6 @@
 {% extends 'Chirp/base.html' %}
 
-{% block title %}グループ{% endblock %}
+{% block title %}グループ関連{% endblock %}
 
 {% block header %}
 
@@ -34,12 +34,5 @@
 <input type="hidden" name="group" value="{{group}}">
 {{friends_form}}
 <button class="btn btn-outline-success mt-0" id="select-members-btn">set members</button>
-</form>
-<hr>
-<p>※新しいGroupの登録</p>
-<form action="{% url 'create_group' %}" method="post">
-{% csrf_token %}
-{{create_form}}
-<button class="btn btn-outline-success mt-1" id="set-members-btn">create new group</button>
 </form>
 {% endblock %}
