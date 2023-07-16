@@ -17,13 +17,6 @@
     {% endfor %}
 </ul>
 {% endif %}
-{% if posts %}
-<ul class="posts">
-    {% for post in posts %}
-    <li{% if post.tags %} class="{{ post.tags }}" {% endif %}>{{ post }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -45,8 +38,10 @@
         <p class="my-0">
             {% if post.group_id.group_name == 'public' %}
             <span class="bg-info text-light px-1">Public</span>
+            {% else %}
+            <span class="bg-light text-secondary px-1">{{post.group_id.group_name}}</span>
             {% endif %}
-            {{post.group_id.group_name}}
+            
             {{post.content}}
         </p>
         <p class="">({{post.created_at}})</p>

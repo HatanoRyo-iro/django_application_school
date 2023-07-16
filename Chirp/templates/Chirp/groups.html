@@ -25,7 +25,7 @@
 {% csrf_token %}
 <input type="hidden" name="mode" value="__groups_form__">
 {{groups_form}}
-<button class="btn btn-outline-success mt-1">select members</button>
+<button class="btn btn-outline-success mt-1">このグループにする!</button>
 </form>
 <hr>
 <form action="{% url 'groups' %}" method="post">
@@ -33,6 +33,6 @@
 <input type="hidden" name="mode" value="__friends_form__">
 <input type="hidden" name="group" value="{{group}}">
 {{friends_form}}
-<button class="btn btn-outline-success mt-0" id="select-members-btn">set members</button>
+<button class="btn btn-outline-success mt-0" id="select-members-btn">メンバーを追加！</button>
 </form>
 {% endblock %}

@@ -134,7 +134,6 @@ def groups(request):
     # POST
     if request.method == 'POST':
         
-        
             # グループメニュー
             if request.POST['mode'] == '__groups_form__':
                 # 選択したグループ名を取得
@@ -180,10 +179,11 @@ def groups(request):
                         friends_list.append(friend.user_id.username)
                 except IntegrityError as e:
                     error_message = str(e)
-                    messages.info(request, 'グループを選択してselect membersを押してからset memberを押してください')
+                    messages.info(request, 'グループを選択して"このグループにする!"を押してからメンバーを選択し"メンバーを追加！"を押してください')
                     return redirect(to='/')
                             
                 messages.success(request, 'チェックされたFriendを' + select_group + 'に登録しました!')
+                
                 
                 # フォームの用意
                 groupsform = GroupSelectMenuForm(request.user, {'groups':select_group})
