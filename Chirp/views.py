@@ -34,30 +34,18 @@ def get_public_user_group():
 
 
 def get_search_group_post(user, group_list, page):
-    page_num = 10
+    page_num = 5
     
     # 全員が見れるページの作成者であるsampleユーザーとそのグループを取得する
     (public_user, public_group) = get_public_user_group()
     
-    # 指定されたグループの取得する
-    groups = Group.objects.filter(Q(group_owner_id=user) | Q(group_owner_id=public_user)).filter(group_name__in=group_list)
-    # そのグループに含まれるフレンドの取得
-    me_friends = Friend.objects.filter(group_id__in=groups)
-    # フレンドのユーザーIDの取得してリストにまとめておく
-    me_users = []
-    for me_friend in me_friends:
-        me_users.append(me_friend.user_id)
+    # 指定されたグループの取得
+    selected_groups = Group.objects.filter(group_name__in=group_list)
     
-    # リスト内のユーザーが作ったグループの取得
-    his_groups = Group.objects.filter(group_owner_id__in=me_users)
-    his_friends = Friend.objects.filter(user_id=user).filter(group_id__in=his_groups)
-    
-    me_groups = []
-    for his_friend in his_friends:
-        me_groups.append(his_friend.group_id)
-    
-    # group_idがgroupsかme_groupsに含まれるpostを取得する
-    posts = Post.objects.filter(Q(group_id__in=groups) | Q(group_id__in=me_groups))
+    # 指定されたグループから全ての投稿を取得
+    posts = Post.objects.filter(group_id__in=selected_groups).order_by('-created_at')
+    print('--------posts--------')
+    print(posts)
     
     # ページネーション
     page_item = Paginator(posts, page_num)
@@ -104,13 +92,22 @@ def home(request, page=1):
         group_name_list = []
         for group in request.POST.getlist('groups'):
             group_name_list.append(group)
+            print('-------group---')
+            print(group)
+        print('-------group_name_list---')
+        print(group_name_list)
         # 投稿の取得
         posts = get_search_group_post(request.user, group_name_list, page)
+        print('-------posts---')
+        print(posts)
+        
         
     # GET
     else:
         # フォームの用意
         checkform = GroupCheckboxForm(request.user)
+        print('-------checkform-------')
+        print(checkform)
         # グループのリストを取得
         groups = Group.objects.filter(group_owner_id=request.user)
         group_name_list = []

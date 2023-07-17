@@ -9,7 +9,13 @@ class GroupCheckboxForm(forms.Form):
     def __init__(self, user, *args, **kwargs):
         super(GroupCheckboxForm, self).__init__(*args, **kwargs)
         public = User.objects.filter(username='sample').first()
-        self.fields['groups'] = forms.MultipleChoiceField(choices=[(item.group_name, item.group_name) for item in Group.objects.filter(group_owner_id__in=[user, public])],
+        print('--------public--------')
+        print(public)
+        my_friend = Friend.objects.filter(friend_owner_id_id=user.id)
+        print('--------friend--------')
+        print(my_friend)
+        friends_ids = [item.user_id for item in my_friend]
+        self.fields['groups'] = forms.MultipleChoiceField(choices=[(item.group_name, item.group_name) for item in Group.objects.filter(group_owner_id__in=[user, *friends_ids ,public])],
                                                           widget = forms.CheckboxSelectMultiple())
 
 
