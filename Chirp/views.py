@@ -44,11 +44,13 @@ def get_search_group_post(user, group_list, page):
     
     # 指定されたグループから全ての投稿を取得
     posts = Post.objects.filter(group_id__in=selected_groups).order_by('-created_at')
-    print('--------posts--------')
+    print('--------posts----aaaaa----')
     print(posts)
     
     # ページネーション
     page_item = Paginator(posts, page_num)
+    print('--------page_item--------')
+    print(page_item)
     return page_item.get_page(page)
  
 

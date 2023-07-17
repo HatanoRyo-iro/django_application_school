@@ -3,6 +3,12 @@
 {% block title %}ホーム{% endblock %}
 
 {% block header %}
+<script>
+    function sendGroupFrom(page) {
+        document.group_form.action += page + '/';
+        document.group_form.submit();
+    }
+</script>
  
 <h1 class="display-4 text-success">Chirp</h1>
 <p>※グループのチェックをONにしてupdateすると、
@@ -64,34 +70,28 @@
 <ul class="pagination justify-content-center">
     {% if contents.has_previous %}
     <li class="page-item">
-        <a class="page-link" href="javascript:sendGroupForm(1);">
-            &laquo; first</a>
+        <a class="page-link" href="javascript:sendGroupFrom(1);">&laquo; first</a>
     </li>
     <li class="page-item">
-        <a class="page-link"
-        href="javascript:sendGroupForm({{contents.previous_page_number}});">
-            &laquo; prev</a>
+        <a class="page-link" href="javascript:sendGroupFrom({{contents.previous_page_number}});">&laquo; prev</a>
     </li>
     {% else %}
     <li class="page-item">
         <a class="page-link">&laquo; first</a>
     </li>
-    <li class="page-item">
+    <li>
         <a class="page-link">&laquo; prev</a>
     </li>
     {% endif %}
     <li class="page-item">
-        <a class="page-link">
-        {{contents.number}}/{{contents.paginator.num_pages}}</a>
+        <a class="page-link">{{contents.number}}/{{contents.paginator.num_pages}}</a>
     </li>
     {% if contents.has_next %}
     <li class="page-item">
-        <a class="page-link" href="javascript:sendGroupForm({{contents.next_page_number }});">
-            next &raquo;</a>
+        <a class="page-link" href="javascript:sendGroupFrom({{contents.next_page_number}});">next &raquo;</a>
     </li>
     <li class="page-item">
-        <a class="page-link" href="javascript:sendGroupForm({{contents.paginator.num_pages}});">
-            last &raquo;</a>
+        <a class="page-link" href="javascript:sendGroupFrom({{contents.paginator.num_pages}});">last &raquo;</a>
     </li>
     {% else %}
     <li class="page-item">
@@ -102,7 +102,6 @@
     </li>
     {% endif %}
 </ul>
-
 {% endblock %}
 
 

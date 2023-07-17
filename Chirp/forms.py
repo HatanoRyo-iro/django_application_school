@@ -16,7 +16,7 @@ class GroupCheckboxForm(forms.Form):
         print(my_friend)
         friends_ids = [item.user_id for item in my_friend]
         self.fields['groups'] = forms.MultipleChoiceField(choices=[(item.group_name, item.group_name) for item in Group.objects.filter(group_owner_id__in=[user, *friends_ids ,public])],
-                                                          widget = forms.CheckboxSelectMultiple())
+                                                          widget = forms.CheckboxSelectMultiple(), error_messages={'required': '1つ以上選択してください'})
 
 
 # グループ選択メニューフォーム
