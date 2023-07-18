@@ -4,16 +4,14 @@
 
 {% block header %}
 <script>
-    function sendGroupFrom(page) {
+    function pagenation_func(page) {
         document.group_form.action += page + '/';
         document.group_form.submit();
     }
 </script>
  
-<h1 class="display-4 text-success">Chirp</h1>
-<p>※グループのチェックをONにしてupdateすると、
-    そのグループに登録されている利用者の投稿だけが表示されます。
-</p>
+<h1 class="display-4 text-success">Chirp Home</h1>
+<p class="alert alert-secondary">グループを選択して更新すると、そのグループに登録されているフレンドの投稿を表示します。</p>
 {% if messages %}
 <ul class="messages">
     {% for message in messages %}
@@ -33,12 +31,12 @@
         {% csrf_token %}
         {{ check_form }}
         <div>
-            <button class="btn btn-outline-success">update</button>
+            <button class="btn btn-outline-success">更新</button>
         </div>
     </form>
 </div>
 <table class="table mt-3">
-    <tr><th>Posts</th></tr>
+    <tr><th>投稿</th></tr>
     {% for post in contents %}
     <tr><td>
         <p class="my-0">
@@ -70,10 +68,10 @@
 <ul class="pagination justify-content-center">
     {% if contents.has_previous %}
     <li class="page-item">
-        <a class="page-link" href="javascript:sendGroupFrom(1);">&laquo; first</a>
+        <a class="page-link" href="javascript:pagenation_func(1);">&laquo; first</a>
     </li>
     <li class="page-item">
-        <a class="page-link" href="javascript:sendGroupFrom({{contents.previous_page_number}});">&laquo; prev</a>
+        <a class="page-link" href="javascript:pagenation_func({{contents.previous_page_number}});">&laquo; prev</a>
     </li>
     {% else %}
     <li class="page-item">
@@ -88,10 +86,10 @@
     </li>
     {% if contents.has_next %}
     <li class="page-item">
-        <a class="page-link" href="javascript:sendGroupFrom({{contents.next_page_number}});">next &raquo;</a>
+        <a class="page-link" href="javascript:pagenation_func({{contents.next_page_number}});">next &raquo;</a>
     </li>
     <li class="page-item">
-        <a class="page-link" href="javascript:sendGroupFrom({{contents.paginator.num_pages}});">last &raquo;</a>
+        <a class="page-link" href="javascript:pagenation_func({{contents.paginator.num_pages}});">last &raquo;</a>
     </li>
     {% else %}
     <li class="page-item">

@@ -1,14 +1,11 @@
 {% extends 'Chirp/base.html' %}
 
-{% block title %}グループ関連{% endblock %}
+{% block title %}グループのフレンド追加{% endblock %}
 
 {% block header %}
 
-<h1 class="display-4 text-success">Group</h1>
-<p class="caption">※グループを選択してselect memberすると、
-    そのグループに登録されている利用者がONになります。
-    利用者のチェックをONにしてset memberすると、ONにしてある
-    利用者がグループに追加されます。</p>
+<h1 class="display-5 text-success">グループのフレンド追加</h1>
+<p class="alert alert-secondary">グループを選択して”このグループにする!”押してから、グループに追加したいフレンドを選択して”メンバーを追加!”を押してください。</p>
 {% if messages %}
 <ul class="messages">
     {% for message in messages %}
