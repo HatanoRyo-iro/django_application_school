@@ -3,8 +3,8 @@
 {% block title %}投稿{% endblock %}
 
 {% block header %}
-<h1 class="display-4 text-success">Post</h1>
-<p class="caption">※投稿先のグループを選択し、投稿します</p>
+<h1 class="display-5 text-success">新規投稿</h1>
+<p class="alert alert-secondary">投稿先のグループを選択し、投稿します。</p>
 {% if messages %}
 <ul class="list-group">
     <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'info' %}alert-info{% endif %}">
