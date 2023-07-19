@@ -1,44 +1,34 @@
 # Chirp
 
-このアプリはブログのようなものです。
+このアプリケーションはブログのようなものです。
 
-# django-template
 
-start project だけ実行してくれれば、あとはいつも通りの django で開発できます。
-docker 内で行いたい場合は、docker compose exec app bash でコンテナに入ってください。
-
-### start project
+### 1. 以下のコマンドを実行してください。
 
 ```bash
-docker compose up -d
+$ docker compose up --build
+
+# djangoのマイグレーションを実行してください。（初回のみ）
+
+$ docker compose exec app python manage.py migrate
+
+# djangoの管理者アカウントを作成してください。（後で使用します。）
+
+$ docker compose exec app python manage.py　createsuperuser
+
 ```
 
-### stop project
+### 2. localhost:8000/adminに作成した管理者アカウントでアクセスしてください。
+
+[http://localhost:8000/admin](http://localhost:8000/admin)
+
+### 3. 管理者アカウントで設定を追加してください。
+
+
+
+
+### 以下でアプリケーションを終了します。
 
 ```bash
 docker compose down
-```
-
-### create app
-
-```bash
-docker compose exec app python manage.py startapp <app_name>
-```
-
-### create superuser
-
-```bash
-docker compose exec app python manage.py createsuperuser
-```
-
-### python のコンテナに入る (bash)
-
-```bash
-docker compose exec app bash
-```
-
-### python のコンテナから出る
-
-```bash
-exit
 ```
