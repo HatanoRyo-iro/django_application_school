@@ -44,13 +44,13 @@ def get_search_group_post(user, group_list, page):
     
     # 指定されたグループから全ての投稿を取得
     posts = Post.objects.filter(group_id__in=selected_groups).order_by('-created_at')
-    print('--------posts----aaaaa----')
-    print(posts)
+    # print('--------posts--------')
+    # print(posts)
     
     # ページネーション
     page_item = Paginator(posts, page_num)
-    print('--------page_item--------')
-    print(page_item)
+    # print('--------page_item--------')
+    # print(page_item)
     return page_item.get_page(page)
  
 
@@ -94,22 +94,22 @@ def home(request, page=1):
         group_name_list = []
         for group in request.POST.getlist('groups'):
             group_name_list.append(group)
-            print('-------group---')
-            print(group)
-        print('-------group_name_list---')
-        print(group_name_list)
+        #     print('-------group---')
+        #     print(group)
+        # print('-------group_name_list---')
+        # print(group_name_list)
         # 投稿の取得
         posts = get_search_group_post(request.user, group_name_list, page)
-        print('-------posts---')
-        print(posts)
+        # print('-------posts---')
+        # print(posts)
         
         
     # GET
     else:
         # フォームの用意
         checkform = GroupCheckboxForm(request.user)
-        print('-------checkform-------')
-        print(checkform)
+        # print('-------checkform-------')
+        # print(checkform)
         # グループのリストを取得
         groups = Group.objects.filter(group_owner_id=request.user)
         group_name_list = []
@@ -141,11 +141,11 @@ def groups(request):
                 group = Group.objects.filter(group_owner_id=request.user).filter(group_name=select_group).first()
                 # グループに含まれるフレンドを取得
                 fds = Friend.objects.filter(friend_owner_id=request.user).filter(group_id=group)
-                print('******************************')
-                print("グループに含まれるフレンド:", Friend.objects.filter(friend_owner_id=request.user))
-                print('******************************')
-                # フレンドのユーザーIDをリストにまとめる
+                # print('******************************')
+                # print("グループに含まれるフレンド:", Friend.objects.filter(friend_owner_id=request.user))
+                # print('******************************')
                 
+                # フレンドのユーザーIDをリストにまとめる
                 friends_list = []
                 for friend in fds:
                     friends_list.append(friend.user_id.username)
@@ -159,9 +159,9 @@ def groups(request):
                 # 選択したグループの取得
                 select_group = request.POST['group']
                 group_obj = Group.objects.filter(group_name=select_group).first()
-                print('-----------------------')
-                print("選択したグループ:", group_obj)
-                print('-----------------------')
+                # print('-----------------------')
+                # print("選択したグループ:", group_obj)
+                # print('-----------------------')
                 # チェックしたフレンドを取得
                 select_friends = request.POST.getlist('friends')
                 # フレンドのユーザー取得
@@ -266,13 +266,16 @@ def post(request):
     # POST
     if request.method == 'POST':
         # 送信内容の取得
-        group_name = request.POST['groups']
+        group_id = request.POST['groups']
         content = request.POST['content']
         # グループの取得
-        group = Group.objects.filter(group_owner_id=request.user).filter(group_name=group_name).first()
+        group = Group.objects.get(id=group_id)
         if group == None:
             (public_user, group) = get_public_user_group()
         # 投稿の保存
+        # print('-------投稿先のグループ-------')
+        # print(group)
+        # print('-----------------------')
         post = Post()
         post.contributor_id = request.user
         post.group_id = group
@@ -301,10 +304,11 @@ def share(request, share_id):
     
     # POST
     if request.method == 'POST':
-        group_name = request.POST['groups']
+        group_id = request.POST['groups'] 
         content = request.POST['content']
+        
         # グループの取得
-        group = Group.objects.filter(group_owner_id=request.user).filter(group_name=group_name).first()
+        group = Group.objects.get(id=group_id)
         if group == None:
             (public_user, group) = get_public_user_group()
         # 投稿を作成

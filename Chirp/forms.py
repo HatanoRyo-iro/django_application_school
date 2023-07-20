@@ -58,5 +58,7 @@ class PostForm(forms.Form):
         print('--------my_friends_groups_ids--------')
         print(my_friends_groups_ids)
         print('---------------------------------')
-        self.fields['groups'] = forms.ChoiceField(choices=[('-', '-')] + [(item.group_name, item.group_name) for item in Group.objects.filter(group_owner_id__in=[user, *my_friends_groups_ids, public])],
+        self.fields['groups'] = forms.ChoiceField(choices=[('-', '-')] + [(item.id, item.group_name) for item in Group.objects.filter(group_owner_id__in=[user, *my_friends_groups_ids, public])],
                                                  widget=forms.Select(attrs={'class' : 'form-control'}))
+        
+    
