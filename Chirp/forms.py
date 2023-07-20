@@ -51,14 +51,17 @@ class PostForm(forms.Form):
         public = User.objects.filter(username='sample').first()
         my_friends = Friend.objects.filter(friend_owner_id_id=user.id)
         my_friends_groups = Group.objects.filter(group_owner_id__in=my_friends.values('user_id'))
-        print('--------my_friends_groups--------')
-        print(my_friends_groups)
-        print('---------------------------------')
+        # print('--------my_friends_groups--------')
+        # print(my_friends_groups)
+        # print('---------------------------------')
         my_friends_groups_ids = [item.id for item in my_friends_groups]
-        print('--------my_friends_groups_ids--------')
-        print(my_friends_groups_ids)
-        print('---------------------------------')
+        # print('--------my_friends_groups_ids--------')
+        # print(my_friends_groups_ids)
+        # print('---------------------------------')
         self.fields['groups'] = forms.ChoiceField(choices=[('-', '-')] + [(item.id, item.group_name) for item in Group.objects.filter(group_owner_id__in=[user, *my_friends_groups_ids, public])],
                                                  widget=forms.Select(attrs={'class' : 'form-control'}))
-        
-    
+
+
+# 検索フォーム
+class SearchForm(forms.Form):
+    search = forms.CharField(label='検索', max_length=50 ,required=False, widget=forms.TextInput())

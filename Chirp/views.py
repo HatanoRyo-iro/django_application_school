@@ -18,7 +18,7 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 
 from django.forms import forms
-from .forms import GroupCheckboxForm, GroupSelectMenuForm, FriendsCheckboxForm, CreateGroupForm, PostForm
+from .forms import GroupCheckboxForm, GroupSelectMenuForm, FriendsCheckboxForm, CreateGroupForm, PostForm, SearchForm
 from .models import Post, Group, Friend, Good
 
 from django.db.utils import IntegrityError
@@ -33,7 +33,7 @@ def get_public_user_group():
     return (public_user, public_group)
 
 
-def get_search_group_post(user, group_list, page):
+def get_search_group_post(user, group_list, search, page):
     page_num = 5
     
     # 全員が見れるページの作成者であるsampleユーザーとそのグループを取得する
@@ -43,7 +43,8 @@ def get_search_group_post(user, group_list, page):
     selected_groups = Group.objects.filter(group_name__in=group_list)
     
     # 指定されたグループから全ての投稿を取得
-    posts = Post.objects.filter(group_id__in=selected_groups).order_by('-created_at')
+    posts = Post.objects.filter(group_id__in=selected_groups).filter(content__icontains=search).order_by('-created_at')
+    
     # print('--------posts--------')
     # print(posts)
     
@@ -90,6 +91,8 @@ def home(request, page=1):
         
         # フォームの用意
         checkform = GroupCheckboxForm(request.user, request.POST)
+        searchform = SearchForm(request.POST)
+        search = request.POST['search'] 
         # チェックされたグループ名をリストにまとめる
         group_name_list = []
         for group in request.POST.getlist('groups'):
@@ -99,7 +102,7 @@ def home(request, page=1):
         # print('-------group_name_list---')
         # print(group_name_list)
         # 投稿の取得
-        posts = get_search_group_post(request.user, group_name_list, page)
+        posts = get_search_group_post(request.user, group_name_list, search, page)
         # print('-------posts---')
         # print(posts)
         
@@ -108,6 +111,7 @@ def home(request, page=1):
     else:
         # フォームの用意
         checkform = GroupCheckboxForm(request.user)
+        searchform = SearchForm()
         # print('-------checkform-------')
         # print(checkform)
         # グループのリストを取得
@@ -116,12 +120,13 @@ def home(request, page=1):
         for group in groups:
             group_name_list.append(group.group_name)
         # 投稿の取得
-        posts = get_search_group_post(request.user, group_name_list, page)
+        posts = get_search_group_post(request.user, group_name_list, '', page)
         
     params = {
         'login_user':request.user,
         'contents':posts,
         'check_form':checkform,
+        'search_form':searchform,
     }
     return render(request, 'Chirp/home.html', params)
 
