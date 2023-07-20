@@ -1,33 +1,33 @@
 # Chirp
 
-このアプリケーションはブログのようなものです。
+このアプリケーションはブログのようなものです．
 
 
-### 1. 以下のコマンドを実行してください。
+### 1. 以下のコマンドを実行してください．
 
 ```bash
 $ docker compose up --build
 
-# djangoのマイグレーションを実行してください。（初回のみ）
+# djangoのマイグレーションを実行してください．（初回のみ）
 
 $ docker compose exec app python manage.py migrate
 
-# djangoの管理者アカウントを作成してください。（後で使用します。）
+# データベースの初期情報を追加します
 
-$ docker compose exec app python manage.py　createsuperuser
+$ docker compose exec app python manage.py loaddata user.json
 
 ```
 
-### 2. localhost:8000/adminに作成した管理者アカウントでアクセスしてください。
+### 2. localhost:8000にアクセスしてください
 
-[http://localhost:8000/admin](http://localhost:8000/admin)
-
-### 3. 管理者アカウントで設定を追加してください。
+[http://localhost:8000](http://localhost:8000)
 
 
 
 
-### 以下でアプリケーションを終了します。
+
+
+### 3. 以下でアプリケーションを終了します。
 
 ```bash
 docker compose down
