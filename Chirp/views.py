@@ -239,7 +239,7 @@ def add(request):
     friend.group_id = public_group
     friend.save()
     
-    messages.success(request, add_user.username + ' を追加しました!groupページに移動して、追加したFriendをメンバーに設定してください。')
+    messages.success(request, add_user.username + ' を追加しました！')
     return redirect(to='/')
 
 # グループ作成処理
@@ -347,7 +347,7 @@ def good(request, good_id):
     is_good = Good.objects.filter(good_user_id=request.user).filter(good_post_id=good_post).count()
     # ゼロより大きければ既にgood済み
     if is_good > 0:
-        messages.success(request, '既にメッセージにはGoodしています。')
+        messages.success(request, '既にこのメッセージには"いいね！"済みです')
         return redirect(to='/')
 
     # goodする投稿のgood_countを1増やす
@@ -359,7 +359,7 @@ def good(request, good_id):
     good.good_post_id = good_post
     good.save()
     
-    messages.success(request, '投稿にGoodしました!')
+    messages.success(request, '投稿に"いいね！"しました!')
     return redirect(to='/')
 
 # 自分の投稿の削除

@@ -59,7 +59,7 @@
         <span class="float-right">
             "投稿者：{{post.contributor_id}}"{% if request.user.id != post.contributor_id.id %}(<a href="{% url 'add' %}?name={{post.contributor_id}}">add friend</a>){% endif %}
             <a href="{% url 'share' post.id %}"><button class="py-0">シェア</button></a>
-            <a href="{% url 'good' post.id %}"><button class="py-0">いいね!</button></a>
+            <a href="{% url 'good' post.id %}"><button class="py-0">いいね！</button></a>
             {% if request.user.id == post.contributor_id.id %}
             <a href="{% url 'mypost_delete' post.id %}"><button class="py-0">削除</button></a>
             {% endif %}
