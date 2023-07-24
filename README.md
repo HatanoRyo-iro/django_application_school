@@ -35,9 +35,9 @@ $ docker compose down
 
 $ docker compose up --build
 
-# localhost:8000にアクセスしてください
+# 2.に戻ってlocalhost:8000にアクセスしてください
 
-[http://localhost:8000](http://localhost:8000)
+open localhost:8000
 
 ```
 
