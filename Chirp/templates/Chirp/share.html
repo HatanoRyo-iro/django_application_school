@@ -21,6 +21,6 @@
 <form action="{% url 'share' share.id %}" method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button class="btn btn-outline-success">シェア</button>
+    <button class="btn btn-outline-success">シェア！</button>
 </form>
 {% endblock %}
