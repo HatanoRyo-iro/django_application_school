@@ -1,0 +1,10 @@
+[
+    {
+        "model" : "Chirp.Group",
+        "pk" : 1,
+        "fields" : {
+            "group_owner_id" : 1,
+            "group_name" : "public"
+        }
+    }
+]
