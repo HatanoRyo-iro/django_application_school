@@ -42,7 +42,7 @@ open http://localhost:8000
 ```
 
 
-### 3. 以下でアプリケーションを終了します。
+### 3. 以下のコマンドでアプリケーションを終了します。
 
 ```bash
 docker compose down
