@@ -230,29 +230,33 @@ def share(request, share_id):
     share = Post.objects.get(id=share_id)
     print(share)
     
-    # POST
-    if request.method == 'POST':
-        group_id = request.POST['groups'] 
-        content = request.POST['content']
-        
-        # グループの取得
-        group = Group.objects.get(id=group_id)
-        if group == None:
-            (public_user, group) = get_public_user_group()
-        
-        # 投稿を作成
-        post = Post()
-        post.contributor_id = request.user
-        post.group_id = group
-        post.content = content
-        post.share_id = share.id
-        post.save()
-        share_message = post.get_share()
-        share_message.shared_count += 1
-        share_message.save()
-        
-        messages.success(request, '投稿をシェアしました！')
-        return redirect(to='/')
+    try:
+        # POST
+        if request.method == 'POST':
+            group_id = request.POST['groups'] 
+            content = request.POST['content']
+            
+            # グループの取得
+            group = Group.objects.get(id=group_id)
+            if group == None:
+                (public_user, group) = get_public_user_group()
+            
+            # 投稿を作成
+            post = Post()
+            post.contributor_id = request.user
+            post.group_id = group
+            post.content = content
+            post.share_id = share.id
+            post.save()
+            share_message = post.get_share()
+            share_message.shared_count += 1
+            share_message.save()
+            
+            messages.success(request, '投稿をシェアしました！')
+            return redirect(to='/')
+    except:
+            messages.info(request, '投稿先のグループを選択してください。')
+            return redirect(to='/')
 
     form = PostForm(request.user)
     params = {
