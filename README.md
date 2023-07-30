@@ -24,7 +24,7 @@ $ docker compose exec app python manage.py loaddata user.json
 
 
 
-## localhost:8000にアクセスしてエラーが出た場合
+## エラーが出た場合
 ```bash
 
 # dockerを一回閉じてください
@@ -35,7 +35,7 @@ $ docker compose down
 
 $ docker compose up --build
 
-# 2.に戻ってlocalhost:8000にアクセスしてください
+# 続きから再開してください
 
 open http://localhost:8000
 
